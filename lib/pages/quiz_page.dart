@@ -20,28 +20,28 @@ class QuizPageState extends State<QuizPage> {
     {
       'questionText': 'Word 1',
       'answers': [
-        {'id': 0, 'text': 'Right', 'score': 1},
-        {'id': 1, 'text': 'Wrong', 'score': 0},
-        {'id': 2, 'text': 'Wrong', 'score': 0},
-        {'id': 3, 'text': 'Wrong', 'score': 0}
+        {'id': 'A', 'text': 'Right', 'score': 1},
+        {'id': 'B', 'text': 'Wrong', 'score': 0},
+        {'id': 'C', 'text': 'Wrong', 'score': 0},
+        {'id': 'D', 'text': 'Wrong', 'score': 0}
       ],
     },
     {
       'questionText': 'Word 2',
       'answers': [
-        {'id': 0, 'text': 'Right', 'score': 1},
-        {'id': 1, 'text': 'Wrong', 'score': 0},
-        {'id': 2, 'text': 'Wrong', 'score': 0},
-        {'id': 3, 'text': 'Wrong', 'score': 0}
+        {'id': 'A', 'text': 'Right', 'score': 1},
+        {'id': 'B', 'text': 'Wrong', 'score': 0},
+        {'id': 'C', 'text': 'Wrong', 'score': 0},
+        {'id': 'D', 'text': 'Wrong', 'score': 0}
       ],
     },
     {
       'questionText': 'Word 3',
       'answers': [
-        {'id': 0, 'text': 'Right', 'score': 1},
-        {'id': 1, 'text': 'Wrong', 'score': 0},
-        {'id': 2, 'text': 'Wrong', 'score': 0},
-        {'id': 3, 'text': 'Wrong', 'score': 0}
+        {'id': 'A', 'text': 'Right', 'score': 1},
+        {'id': 'B', 'text': 'Wrong', 'score': 0},
+        {'id': 'C', 'text': 'Wrong', 'score': 0},
+        {'id': 'D', 'text': 'Wrong', 'score': 0}
       ],
     },
   ];
@@ -62,12 +62,12 @@ class QuizPageState extends State<QuizPage> {
   //   super.initState();
   // }
 
-  _answerQuestion(int score, int id) {
+  _answerQuestion(int score, String id) {
     isCorrect = (score == 1);
-    answer0 = (id == 0);
-    answer1 = (id == 1);
-    answer2 = (id == 2);
-    answer3 = (id == 3);
+    answer0 = (id == 'A');
+    answer1 = (id == 'B');
+    answer2 = (id == 'C');
+    answer3 = (id == 'D');
 
     if (score == 1) {
       _totalScore = _totalScore + score;
@@ -170,7 +170,7 @@ class QuizPageState extends State<QuizPage> {
                                   return Answer(() {
                                     _answerQuestion(answer['score'], answer['id']);
                                     return overlayShouldBeVisible == false;
-                                  }, answer['text']);
+                                  }, answer['text'], answer['id']);
                                 }).toList(),
                               ]),
                           GestureDetector(

@@ -20,7 +20,7 @@ class CorrectWrongOverlayState extends State<CorrectWrongOverlay>
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Color.fromRGBO(0, 0, 0, .1),
+      color: Color.fromRGBO(0, 0, 0, 0),
       // color: Colors.black54,
       child: InkWell(
           onTap: () => widget._onTap(),
@@ -49,8 +49,8 @@ class CorrectWrongOverlayState extends State<CorrectWrongOverlay>
                                     : Icons.clear,
                                 size: 150.0,
                                 color: widget._isCorrect == true
-                                    ? Colors.green
-                                    : Colors.red),
+                                    ? Color.fromRGBO(0, 400, 0, .5)
+                                    : Color.fromRGBO(400, 0, 0, .5)),
                       ),
                       Container(
                         width: double.infinity,
@@ -66,8 +66,8 @@ class CorrectWrongOverlayState extends State<CorrectWrongOverlay>
                                     : Icons.clear,
                                 size: 150.0,
                                 color: widget._isCorrect == true
-                                    ? Colors.green
-                                    : Colors.red),
+                                    ? Color.fromRGBO(0, 400, 0, .5)
+                                    : Color.fromRGBO(400, 0, 0, .5)),
                       ),
                       Container(
                         width: double.infinity,
@@ -83,8 +83,8 @@ class CorrectWrongOverlayState extends State<CorrectWrongOverlay>
                                     : Icons.clear,
                                 size: 150.0,
                                 color: widget._isCorrect == true
-                                    ? Colors.green
-                                    : Colors.red),
+                                    ? Color.fromRGBO(0, 400, 0, .5)
+                                    : Color.fromRGBO(400, 0, 0, .5)),
                       ),
                       Container(
                         width: double.infinity,
@@ -100,8 +100,8 @@ class CorrectWrongOverlayState extends State<CorrectWrongOverlay>
                                     : Icons.clear,
                                 size: 150.0,
                                 color: widget._isCorrect == true
-                                    ? Colors.green
-                                    : Colors.red),
+                                    ? Color.fromRGBO(0, 400, 0, .5)
+                                    : Color.fromRGBO(400, 0, 0, .5)),
                       ),
                     ]),
               ),
