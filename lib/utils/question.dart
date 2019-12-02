@@ -1,6 +1,20 @@
-class Question {
-  final String question;
-  final bool answer;
+import 'package:flutter/material.dart';
 
-  Question(this.question, this.answer);
+class Question extends StatelessWidget {
+  final String questionText;
+
+  Question(this.questionText);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      margin: EdgeInsets.all(10),
+      child: Text(
+        questionText, 
+        style: TextStyle(fontSize: 28),
+        textAlign: TextAlign.center,
+      ),
+    );
+  }
 }

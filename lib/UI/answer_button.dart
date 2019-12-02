@@ -1,32 +1,33 @@
 import 'package:flutter/material.dart';
 
-class AnswerButton extends StatelessWidget {
+class Answer extends StatelessWidget {
+  final Function selectHandler;
+  final String answerText;
 
-  final bool _answer;
-  final VoidCallback _onTap;
-
-  AnswerButton(this._answer, this._onTap);
+  Answer(this.selectHandler, this.answerText);
 
   @override
   Widget build(BuildContext context) {
-    return Expanded( // true button
-      child: Material(
-        color: _answer == true ? Colors.greenAccent : Colors.redAccent,
-        child: InkWell(
-          onTap: () => _onTap(),
-          child: Center(
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.white, width: 5.0)
+    return GestureDetector(
+      onTap: selectHandler,
+      child: Stack(
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.all(8),
+            child: Center(
+              child: Text(
+                answerText,
+                style: TextStyle(fontSize: 30.0, color: Colors.black),
               ),
-              padding: EdgeInsets.all(20.0),
-              child: Text(_answer == true ? "True" : "False",
-                style: TextStyle(color: Colors.white, fontSize: 40.0, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic)
-              ),
-            )
+            ),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(
+                    color:
+                        Color(0xffEEEEEE),
+                    width: 3.45999)),
           ),
-        ),
-        
+        ],
       ),
     );
   }
