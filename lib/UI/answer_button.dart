@@ -4,8 +4,11 @@ class Answer extends StatelessWidget {
   final Function selectHandler;
   final String answerText;
   final String answerId;
+  final int answerIndex;
+  List<bool> isSelected;
 
-  Answer(this.selectHandler, this.answerText, this.answerId);
+  Answer(this.selectHandler, this.answerText, this.answerId, this.answerIndex,
+      this.isSelected);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +26,9 @@ class Answer extends StatelessWidget {
                   child: Text(
                     answerId,
                     style: TextStyle(
-                        color: Color(0xffEEEEEE),
+                        color: isSelected[answerIndex]
+                            ? Color(0xff979797)
+                            : Color(0xffEEEEEE),
                         fontWeight: FontWeight.bold,
                         fontSize: 26),
                   ),
@@ -41,7 +46,11 @@ class Answer extends StatelessWidget {
             ),
             decoration: BoxDecoration(
                 color: Colors.white,
-                border: Border.all(color: Color(0xffEEEEEE), width: 3.45999)),
+                border: Border.all(
+                    color: isSelected[answerIndex]
+                        ? Color(0xff979797)
+                        : Color(0xffEEEEEE),
+                    width: 3.45999)),
           ),
         ],
       ),

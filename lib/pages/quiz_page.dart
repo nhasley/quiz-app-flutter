@@ -20,35 +20,35 @@ class QuizPageState extends State<QuizPage> {
     {
       'questionText': 'Word 1',
       'answers': [
-        {'id': 'A', 'text': 'Right', 'score': 1},
-        {'id': 'B', 'text': 'Wrong', 'score': 0},
-        {'id': 'C', 'text': 'Wrong', 'score': 0},
-        {'id': 'D', 'text': 'Wrong', 'score': 0}
+        {'index': 0, 'id': 'A', 'text': 'Right', 'score': 1},
+        {'index': 1, 'id': 'B', 'text': 'Wrong', 'score': 0},
+        {'index': 2, 'id': 'C', 'text': 'Wrong', 'score': 0},
+        {'index': 3, 'id': 'D', 'text': 'Wrong', 'score': 0}
       ],
     },
     {
       'questionText': 'Word 2',
       'answers': [
-        {'id': 'A', 'text': 'Right', 'score': 1},
-        {'id': 'B', 'text': 'Wrong', 'score': 0},
-        {'id': 'C', 'text': 'Wrong', 'score': 0},
-        {'id': 'D', 'text': 'Wrong', 'score': 0}
+        {'index': 0, 'id': 'A', 'text': 'Right', 'score': 1},
+        {'index': 1, 'id': 'B', 'text': 'Wrong', 'score': 0},
+        {'index': 2, 'id': 'C', 'text': 'Wrong', 'score': 0},
+        {'index': 3, 'id': 'D', 'text': 'Wrong', 'score': 0}
       ],
     },
     {
       'questionText': 'Word 3',
       'answers': [
-        {'id': 'A', 'text': 'Right', 'score': 1},
-        {'id': 'B', 'text': 'Wrong', 'score': 0},
-        {'id': 'C', 'text': 'Wrong', 'score': 0},
-        {'id': 'D', 'text': 'Wrong', 'score': 0}
+        {'index': 0, 'id': 'A', 'text': 'Right', 'score': 1},
+        {'index': 1, 'id': 'B', 'text': 'Wrong', 'score': 0},
+        {'index': 2, 'id': 'C', 'text': 'Wrong', 'score': 0},
+        {'index': 3, 'id': 'D', 'text': 'Wrong', 'score': 0}
       ],
     },
   ];
 
   int _questionIndex = 0;
   var _totalScore = 0;
-  // List<bool> isSelected;
+  List<bool> isSelected;
   bool overlayShouldBeVisible = false;
   bool isCorrect;
   bool answer0;
@@ -56,13 +56,13 @@ class QuizPageState extends State<QuizPage> {
   bool answer2;
   bool answer3;
 
-  // @override
-  // void initState() {
-  //   isSelected = [false, false, false, false];
-  //   super.initState();
-  // }
+  @override
+  void initState() {
+    isSelected = [false, false, false, false];
+    super.initState();
+  }
 
-  _answerQuestion(int score, String id) {
+  _answerQuestion(int score, String id, int index) {
     isCorrect = (score == 1);
     answer0 = (id == 'A');
     answer1 = (id == 'B');
@@ -73,13 +73,76 @@ class QuizPageState extends State<QuizPage> {
       _totalScore = _totalScore + score;
     }
 
-    setState(() {
-      overlayShouldBeVisible = true;
-    });
+    if (index == 0) {
+      setState(() => {
+            if (isSelected[1] || isSelected[2] || isSelected[3])
+              {
+                isSelected[1] = false,
+                isSelected[2] = false,
+                isSelected[3] = false,
+                isSelected[0] = !isSelected[0],
+              }
+            else
+              {
+                isSelected[0] = !isSelected[0],
+                if (score == 1) {_totalScore = _totalScore - score}
+              },
+          });
+    }
+    if (index == 1) {
+      setState(() => {
+            if (isSelected[0] || isSelected[2] || isSelected[3])
+              {
+                isSelected[0] = false,
+                isSelected[2] = false,
+                isSelected[3] = false,
+                isSelected[1] = !isSelected[1],
+              }
+            else
+              {
+                isSelected[1] = !isSelected[1],
+                if (score == 1) {_totalScore = _totalScore - score}
+              },
+          });
+    }
+    if (index == 2) {
+      setState(() => {
+            if (isSelected[1] || isSelected[0] || isSelected[3])
+              {
+                isSelected[1] = false,
+                isSelected[0] = false,
+                isSelected[3] = false,
+                isSelected[2] = !isSelected[2],
+              }
+            else
+              {
+                isSelected[2] = !isSelected[2],
+                if (score == 1) {_totalScore = _totalScore - score}
+              },
+          });
+    }
+    if (index == 3) {
+      setState(() => {
+            if (isSelected[1] || isSelected[2] || isSelected[0])
+              {
+                isSelected[1] = false,
+                isSelected[2] = false,
+                isSelected[0] = false,
+                isSelected[3] = !isSelected[3],
+              }
+            else
+              {
+                isSelected[3] = !isSelected[3],
+                if (score == 1) {_totalScore = _totalScore - score}
+              },
+          });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    var check =
+        (isSelected[0] || isSelected[1] || isSelected[2] || isSelected[3]);
     return Scaffold(
       backgroundColor: Colors.grey[400],
       body: Stack(
@@ -156,7 +219,8 @@ class QuizPageState extends State<QuizPage> {
                           SizedBox(
                             height: 5,
                           ),
-                          QuestionText(_questions[_questionIndex]['questionText']),
+                          QuestionText(
+                              _questions[_questionIndex]['questionText']),
                           GridView.count(
                               crossAxisCount: 2,
                               childAspectRatio: (1 / 1),
@@ -168,13 +232,18 @@ class QuizPageState extends State<QuizPage> {
                                         as List<Map<String, Object>>)
                                     .map((answer) {
                                   return Answer(() {
-                                    _answerQuestion(answer['score'], answer['id']);
+                                    _answerQuestion(answer['score'],
+                                        answer['id'], answer['index']);
                                     return overlayShouldBeVisible == false;
-                                  }, answer['text'], answer['id']);
+                                  }, answer['text'], answer['id'], answer['index'], isSelected);
                                 }).toList(),
                               ]),
                           GestureDetector(
-                            onTap: null,
+                            onTap: check
+                                ? () => setState(() {
+                                      overlayShouldBeVisible = true;
+                                    })
+                                : null,
                             child: Container(
                               width: double.infinity,
                               height: 60,
@@ -185,17 +254,23 @@ class QuizPageState extends State<QuizPage> {
                                     'Check',
                                     style: TextStyle(
                                         fontSize: 20,
-                                        color: Color.fromRGBO(0, 0, 0, .2),
+                                        color: check
+                                            ? Colors.white
+                                            : Color.fromRGBO(0, 0, 0, .2),
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ],
                               ),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(15),
-                                  color: Color(0xffE1E1E1),
+                                  color: check
+                                      ? Color(0xff979797)
+                                      : Color(0xffE1E1E1),
                                   boxShadow: [
                                     BoxShadow(
-                                        color: Colors.grey[400],
+                                        color: check
+                                            ? Color.fromRGBO(105, 105, 105, 1)
+                                            : Colors.grey[400],
                                         offset: Offset(0, 5))
                                   ]),
                             ),
@@ -264,6 +339,10 @@ class QuizPageState extends State<QuizPage> {
                     return;
                   }
                   this.setState(() {
+                    isSelected[0] = false;
+                    isSelected[1] = false;
+                    isSelected[2] = false;
+                    isSelected[3] = false;
                     overlayShouldBeVisible = false;
                     _questionIndex = _questionIndex + 1;
                   });
