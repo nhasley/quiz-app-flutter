@@ -16,7 +16,7 @@ class ScorePage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text(score.toString() + "/" + totalQuestions.toString(), style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 30.0)),
+          Text(score.toString() + " / " + totalQuestions.toString(), style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 30.0)),
           Text("correct", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),),
           IconButton(
             icon: Icon(Icons.arrow_right),

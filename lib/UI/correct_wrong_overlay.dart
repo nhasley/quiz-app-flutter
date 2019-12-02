@@ -6,10 +6,9 @@ class CorrectWrongOverlay extends StatefulWidget {
   final bool _answer1;
   final bool _answer2;
   final bool _answer3;
-  final VoidCallback _onTap;
 
   CorrectWrongOverlay(this._isCorrect, this._answer0, this._answer1,
-      this._answer2, this._answer3, this._onTap);
+      this._answer2, this._answer3);
 
   @override
   State createState() => CorrectWrongOverlayState();
@@ -22,8 +21,7 @@ class CorrectWrongOverlayState extends State<CorrectWrongOverlay>
     return Material(
       color: Color.fromRGBO(0, 0, 0, 0),
       // color: Colors.black54,
-      child: InkWell(
-          onTap: () => widget._onTap(),
+      child: Container(
           child: Column(
             children: <Widget>[
               SizedBox(height: 190,),

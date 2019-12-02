@@ -11,41 +11,14 @@ import '../UI/correct_wrong_overlay.dart';
 import './score_page.dart';
 
 class QuizPage extends StatefulWidget {
+  final List<Map<String, Object>> questions;
+
+  QuizPage(this.questions);
   @override
   State createState() => QuizPageState();
 }
 
 class QuizPageState extends State<QuizPage> {
-  final _questions = const [
-    {
-      'questionText': 'Word 1',
-      'answers': [
-        {'index': 0, 'id': 'A', 'text': 'Right', 'score': 1},
-        {'index': 1, 'id': 'B', 'text': 'Wrong', 'score': 0},
-        {'index': 2, 'id': 'C', 'text': 'Wrong', 'score': 0},
-        {'index': 3, 'id': 'D', 'text': 'Wrong', 'score': 0}
-      ],
-    },
-    {
-      'questionText': 'Word 2',
-      'answers': [
-        {'index': 0, 'id': 'A', 'text': 'Right', 'score': 1},
-        {'index': 1, 'id': 'B', 'text': 'Wrong', 'score': 0},
-        {'index': 2, 'id': 'C', 'text': 'Wrong', 'score': 0},
-        {'index': 3, 'id': 'D', 'text': 'Wrong', 'score': 0}
-      ],
-    },
-    {
-      'questionText': 'Word 3',
-      'answers': [
-        {'index': 0, 'id': 'A', 'text': 'Right', 'score': 1},
-        {'index': 1, 'id': 'B', 'text': 'Wrong', 'score': 0},
-        {'index': 2, 'id': 'C', 'text': 'Wrong', 'score': 0},
-        {'index': 3, 'id': 'D', 'text': 'Wrong', 'score': 0}
-      ],
-    },
-  ];
-
   int _questionIndex = 0;
   var _totalScore = 0;
   List<bool> isSelected;
@@ -216,7 +189,7 @@ class QuizPageState extends State<QuizPage> {
                             height: 5,
                           ),
                           QuestionText(
-                              _questions[_questionIndex]['questionText']),
+                              widget.questions[_questionIndex]['questionText']),
                           GridView.count(
                               crossAxisCount: 2,
                               childAspectRatio: (1 / 1),
@@ -224,7 +197,7 @@ class QuizPageState extends State<QuizPage> {
                                   ScrollController(keepScrollOffset: false),
                               shrinkWrap: true,
                               children: <Widget>[
-                                ...(_questions[_questionIndex]['answers']
+                                ...(widget.questions[_questionIndex]['answers']
                                         as List<Map<String, Object>>)
                                     .map((answer) {
                                   return Answer(() {
@@ -237,9 +210,42 @@ class QuizPageState extends State<QuizPage> {
                               ]),
                           GestureDetector(
                             onTap: check
-                                ? () => setState(() {
+                                ? () {
+                                    Future.delayed(
+                                        const Duration(milliseconds: 1200), () {
+                                      setState(() {
+                                        if (_questionIndex ==
+                                            (widget.questions.length - 1)) {
+                                          Navigator.of(context)
+                                              .pushAndRemoveUntil(
+                                                  MaterialPageRoute(
+                                                      builder: (BuildContext
+                                                              context) =>
+                                                          ScorePage(
+                                                              _totalScore,
+                                                              widget.questions
+                                                                  .length)),
+                                                  (Route route) =>
+                                                      route == null);
+                                          return;
+                                        }
+                                        this.setState(() {
+                                          isSelected[0] = false;
+                                          isSelected[1] = false;
+                                          isSelected[2] = false;
+                                          isSelected[3] = false;
+                                          overlayShouldBeVisible = false;
+                                          _questionIndex = _questionIndex + 1;
+                                        });
+                                      });
+                                    });
+                                    if (isCorrect) {
+                                      _totalScore = _totalScore + 1;
+                                    }
+                                    setState(() {
                                       overlayShouldBeVisible = true;
-                                    })
+                                    });
+                                  }
                                 : null,
                             child: Container(
                               width: double.infinity,
@@ -297,7 +303,7 @@ class QuizPageState extends State<QuizPage> {
                             width: 5,
                           ),
                           Text(
-                            '/ ${_questions.length}',
+                            '/ ${widget.questions.length}',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 15,
@@ -326,27 +332,7 @@ class QuizPageState extends State<QuizPage> {
           ),
           overlayShouldBeVisible == true
               ? CorrectWrongOverlay(
-                  isCorrect, answer0, answer1, answer2, answer3, () {
-                  if (isCorrect) {
-                    _totalScore = _totalScore + 1;
-                  }
-                  if (_questionIndex == (_questions.length - 1)) {
-                    Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                ScorePage(_totalScore, _questions.length)),
-                        (Route route) => route == null);
-                    return;
-                  }
-                  this.setState(() {
-                    isSelected[0] = false;
-                    isSelected[1] = false;
-                    isSelected[2] = false;
-                    isSelected[3] = false;
-                    overlayShouldBeVisible = false;
-                    _questionIndex = _questionIndex + 1;
-                  });
-                })
+                  isCorrect, answer0, answer1, answer2, answer3)
               : Container()
         ],
       ),

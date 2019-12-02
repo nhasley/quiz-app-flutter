@@ -2,6 +2,35 @@ import 'package:flutter/material.dart';
 import './quiz_page.dart';
 
 class LandingPage extends StatelessWidget {
+  final _questions = const [
+    {
+      'questionText': 'Word 1',
+      'answers': [
+        {'index': 0, 'id': 'A', 'text': 'Right', 'score': 1},
+        {'index': 1, 'id': 'B', 'text': 'Wrong', 'score': 0},
+        {'index': 2, 'id': 'C', 'text': 'Wrong', 'score': 0},
+        {'index': 3, 'id': 'D', 'text': 'Wrong', 'score': 0}
+      ],
+    },
+    {
+      'questionText': 'Word 2',
+      'answers': [
+        {'index': 0, 'id': 'A', 'text': 'Right', 'score': 1},
+        {'index': 1, 'id': 'B', 'text': 'Wrong', 'score': 0},
+        {'index': 2, 'id': 'C', 'text': 'Wrong', 'score': 0},
+        {'index': 3, 'id': 'D', 'text': 'Wrong', 'score': 0}
+      ],
+    },
+    {
+      'questionText': 'Word 3',
+      'answers': [
+        {'index': 0, 'id': 'A', 'text': 'Right', 'score': 1},
+        {'index': 1, 'id': 'B', 'text': 'Wrong', 'score': 0},
+        {'index': 2, 'id': 'C', 'text': 'Wrong', 'score': 0},
+        {'index': 3, 'id': 'D', 'text': 'Wrong', 'score': 0}
+      ],
+    },
+  ];
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -94,7 +123,7 @@ class LandingPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          '2',
+                          _questions.length.toString(),
                           style: TextStyle(
                               color: Color(0xff5B5B5B),
                               fontWeight: FontWeight.w900,
@@ -132,7 +161,7 @@ class LandingPage extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                builder: (BuildContext context) => QuizPage())),
+                builder: (BuildContext context) => QuizPage(_questions))),
             child: Container(
               width: 380,
               height: 60,
