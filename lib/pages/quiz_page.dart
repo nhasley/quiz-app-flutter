@@ -69,9 +69,9 @@ class QuizPageState extends State<QuizPage> {
     answer2 = (id == 'C');
     answer3 = (id == 'D');
 
-    if (score == 1) {
-      _totalScore = _totalScore + score;
-    }
+    // if (score == 1) {
+    //   _totalScore = _totalScore + score;
+    // }
 
     if (index == 0) {
       setState(() => {
@@ -85,7 +85,6 @@ class QuizPageState extends State<QuizPage> {
             else
               {
                 isSelected[0] = !isSelected[0],
-                if (score == 1) {_totalScore = _totalScore - score}
               },
           });
     }
@@ -101,7 +100,6 @@ class QuizPageState extends State<QuizPage> {
             else
               {
                 isSelected[1] = !isSelected[1],
-                if (score == 1) {_totalScore = _totalScore - score}
               },
           });
     }
@@ -117,7 +115,6 @@ class QuizPageState extends State<QuizPage> {
             else
               {
                 isSelected[2] = !isSelected[2],
-                if (score == 1) {_totalScore = _totalScore - score}
               },
           });
     }
@@ -133,7 +130,6 @@ class QuizPageState extends State<QuizPage> {
             else
               {
                 isSelected[3] = !isSelected[3],
-                if (score == 1) {_totalScore = _totalScore - score}
               },
           });
     }
@@ -235,7 +231,8 @@ class QuizPageState extends State<QuizPage> {
                                     _answerQuestion(answer['score'],
                                         answer['id'], answer['index']);
                                     return overlayShouldBeVisible == false;
-                                  }, answer['text'], answer['id'], answer['index'], isSelected);
+                                  }, answer['text'], answer['id'],
+                                      answer['index'], isSelected);
                                 }).toList(),
                               ]),
                           GestureDetector(
@@ -330,6 +327,9 @@ class QuizPageState extends State<QuizPage> {
           overlayShouldBeVisible == true
               ? CorrectWrongOverlay(
                   isCorrect, answer0, answer1, answer2, answer3, () {
+                  if (isCorrect) {
+                    _totalScore = _totalScore + 1;
+                  }
                   if (_questionIndex == (_questions.length - 1)) {
                     Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(
