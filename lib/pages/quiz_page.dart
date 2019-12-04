@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_quiz_true_false/pages/landing_page.dart';
-
-import '../utils/question.dart';
-import '../utils/quiz.dart';
-
 import '../UI/answer_button.dart';
 import '../UI/question_text.dart';
 import '../UI/correct_wrong_overlay.dart';
+import '../UI/exit_button.dart';
 
 import './score_page.dart';
 
@@ -41,10 +38,6 @@ class QuizPageState extends State<QuizPage> {
     answer1 = (id == 'B');
     answer2 = (id == 'C');
     answer3 = (id == 'D');
-
-    // if (score == 1) {
-    //   _totalScore = _totalScore + score;
-    // }
 
     if (index == 0) {
       setState(() => {
@@ -124,7 +117,7 @@ class QuizPageState extends State<QuizPage> {
                   //popup exit menu
                   top: 15,
                   left: -15,
-                  child: ExitButton(),
+                  child: ExitButton(Colors.white),
                 ),
                 Positioned.fill(
                   top: 66,
@@ -335,60 +328,6 @@ class QuizPageState extends State<QuizPage> {
                   isCorrect, answer0, answer1, answer2, answer3)
               : Container()
         ],
-      ),
-    );
-  }
-}
-
-class ExitButton extends StatefulWidget {
-  const ExitButton({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  _ExitButtonState createState() => _ExitButtonState();
-}
-
-class _ExitButtonState extends State<ExitButton> {
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.topLeft,
-      child: IconButton(
-        onPressed: () => setState(() {
-          return showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                    title: Text('Do you wish to exit the quiz?'),
-                    content: Text("Your progress will be lost"),
-                    actions: <Widget>[
-                      FlatButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => LandingPage()));
-                        },
-                        child: Text(
-                          'End Quiz',
-                        ),
-                      ),
-                      FlatButton(
-                        onPressed: () {
-                          Navigator.of(context, rootNavigator: true)
-                              .pop('dialog');
-                        },
-                        child: Text(
-                          'Continue Quiz',
-                        ),
-                      ),
-                    ],
-                  ));
-        }),
-        icon: Icon(
-          Icons.clear,
-          color: Colors.white,
-        ),
       ),
     );
   }
