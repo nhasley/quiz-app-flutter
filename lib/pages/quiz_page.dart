@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_quiz_true_false/pages/landing_page.dart';
 import '../UI/answer_button.dart';
-import '../UI/question_text.dart';
-import '../UI/correct_wrong_overlay.dart';
-import '../UI/exit_button.dart';
-
+import '../utils/question.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 import './score_page.dart';
 
 class QuizPage extends StatefulWidget {
@@ -25,6 +22,7 @@ class QuizPageState extends State<QuizPage> {
   bool answer1;
   bool answer2;
   bool answer3;
+  
 
   @override
   void initState() {
@@ -99,12 +97,33 @@ class QuizPageState extends State<QuizPage> {
               },
           });
     }
+    Future.delayed(const Duration(milliseconds: 400), () {
+      setState(() {
+        if (_questionIndex == (widget.questions.length - 1)) {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                      ScorePage(_totalScore, widget.questions.length)),
+              (Route route) => route == null);
+          return;
+        }
+        this.setState(() {
+          isSelected[0] = false;
+          isSelected[1] = false;
+          isSelected[2] = false;
+          isSelected[3] = false;
+          overlayShouldBeVisible = false;
+          _questionIndex = _questionIndex + 1;
+        });
+      });
+    });
+    if (isCorrect) {
+      _totalScore = _totalScore + 1;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    var check =
-        (isSelected[0] || isSelected[1] || isSelected[2] || isSelected[3]);
     return Scaffold(
       backgroundColor: Colors.grey[400],
       body: Stack(
@@ -114,36 +133,13 @@ class QuizPageState extends State<QuizPage> {
             child: Stack(
               children: <Widget>[
                 Positioned.fill(
-                  //popup exit menu
-                  top: 15,
-                  left: -15,
-                  child: ExitButton(Colors.white),
-                ),
-                Positioned.fill(
-                  top: 66,
-                  bottom: 500,
-                  left: 40,
-                  right: 40,
-                  child: Container(
-                    height: 20,
-                    decoration: BoxDecoration(
-                      color: Color.fromRGBO(255, 255, 255, 0.2),
-                      borderRadius: BorderRadius.all(Radius.circular(28.778)),
-                    ),
-                  ),
-                ),
-                Positioned.fill(
-                  top: 85,
-                  bottom: 400,
-                  left: 15,
-                  right: 15,
-                  child: Container(
-                    width: MediaQuery.of(context).size.width / 1.22,
-                    height: 20,
-                    decoration: BoxDecoration(
-                        color: Color.fromRGBO(255, 255, 255, 0.4),
-                        borderRadius:
-                            BorderRadius.all(Radius.circular(29.435))),
+                  //question counter
+                  top: -730,
+                  child: LinearPercentIndicator(
+                    lineHeight: 15,
+                    percent: _questionIndex / widget.questions.length,
+                    progressColor: Theme.of(context).primaryColor,
+                    backgroundColor: Theme.of(context).primaryColorLight,
                   ),
                 ),
                 Positioned.fill(
@@ -151,7 +147,7 @@ class QuizPageState extends State<QuizPage> {
                   bottom: 63,
                   child: Container(
                     width: MediaQuery.of(context).size.width,
-                    height: 500,
+
                     decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
@@ -181,7 +177,7 @@ class QuizPageState extends State<QuizPage> {
                           SizedBox(
                             height: 5,
                           ),
-                          QuestionText(
+                          Question(
                               widget.questions[_questionIndex]['questionText']),
                           GridView.count(
                               crossAxisCount: 2,
@@ -201,120 +197,6 @@ class QuizPageState extends State<QuizPage> {
                                       answer['index'], isSelected);
                                 }).toList(),
                               ]),
-                          GestureDetector(
-                            onTap: check
-                                ? () {
-                                    Future.delayed(
-                                        const Duration(milliseconds: 1200), () {
-                                      setState(() {
-                                        if (_questionIndex ==
-                                            (widget.questions.length - 1)) {
-                                          Navigator.of(context)
-                                              .pushAndRemoveUntil(
-                                                  MaterialPageRoute(
-                                                      builder: (BuildContext
-                                                              context) =>
-                                                          ScorePage(
-                                                              _totalScore,
-                                                              widget.questions
-                                                                  .length)),
-                                                  (Route route) =>
-                                                      route == null);
-                                          return;
-                                        }
-                                        this.setState(() {
-                                          isSelected[0] = false;
-                                          isSelected[1] = false;
-                                          isSelected[2] = false;
-                                          isSelected[3] = false;
-                                          overlayShouldBeVisible = false;
-                                          _questionIndex = _questionIndex + 1;
-                                        });
-                                      });
-                                    });
-                                    if (isCorrect) {
-                                      _totalScore = _totalScore + 1;
-                                    }
-                                    setState(() {
-                                      overlayShouldBeVisible = true;
-                                    });
-                                  }
-                                : null,
-                            child: Container(
-                              width: double.infinity,
-                              height: 60,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Text(
-                                    'Check',
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        color: check
-                                            ? Colors.white
-                                            : Color.fromRGBO(0, 0, 0, .2),
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
-                                  color: check
-                                      ? Color(0xff979797)
-                                      : Color(0xffE1E1E1),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: check
-                                            ? Color.fromRGBO(105, 105, 105, 1)
-                                            : Colors.grey[400],
-                                        offset: Offset(0, 5))
-                                  ]),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned.fill(
-                  //question counter
-                  top: 30,
-                  child: Align(
-                    alignment: Alignment.topCenter,
-                    child: Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            (_questionIndex).toString(),
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w900,
-                                fontSize: 22),
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            '/ ${widget.questions.length}',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w500),
-                          )
-                        ],
-                      ),
-                      height: 37,
-                      width: 73,
-                      decoration: BoxDecoration(
-                        color: Color(0xff949494),
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                        boxShadow: [
-                          BoxShadow(
-                            offset: Offset(0, 5),
-                            color: Colors.black26,
-                            blurRadius: 20.0,
-                          ),
                         ],
                       ),
                     ),
@@ -323,10 +205,6 @@ class QuizPageState extends State<QuizPage> {
               ],
             ),
           ),
-          overlayShouldBeVisible == true
-              ? CorrectWrongOverlay(
-                  isCorrect, answer0, answer1, answer2, answer3)
-              : Container()
         ],
       ),
     );
