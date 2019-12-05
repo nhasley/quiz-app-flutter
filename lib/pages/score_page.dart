@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'dart:math' as math;
 import './placement_test_start.dart';
+// import './landing_page.dart';
 import '../UI/progress_bar.dart';
 
 class ScorePage extends StatefulWidget {
